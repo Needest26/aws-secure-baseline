@@ -1,0 +1,12 @@
+# Example values. Every variable has a default, so this file is optional.
+#
+# To change something, copy this file to terraform.tfvars and edit it.
+# terraform.tfvars is ignored by Git, so your own values (such as your
+# email address) never end up in the repository.
+
+# aws_region   = "us-east-1"
+# project_name = "secure-baseline"
+
+# Email address to notify when the root-usage alarm fires.
+# Leave unset for no email.
+# alert_email = "you@example.com"
