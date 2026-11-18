@@ -53,3 +53,11 @@ variable "force_destroy_log_bucket" {
   type        = bool
   default     = true
 }
+
+# --- Monitoring ---
+
+variable "alert_email" {
+  description = "Email address to notify when the root-usage alarm fires. Leave empty for no email."
+  type        = string
+  default     = ""
+}
