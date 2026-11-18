@@ -33,3 +33,9 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   default     = ["10.0.10.0/24", "10.0.11.0/24"]
 }
+
+variable "app_port" {
+  description = "Port the app tier listens on. Only the web tier may reach it."
+  type        = number
+  default     = 8080
+}
