@@ -39,3 +39,17 @@ variable "app_port" {
   type        = number
   default     = 8080
 }
+
+# --- Logging ---
+
+variable "log_retention_days" {
+  description = "How long CloudWatch Logs keeps CloudTrail events. The S3 bucket keeps the full history."
+  type        = number
+  default     = 30
+}
+
+variable "force_destroy_log_bucket" {
+  description = "Allow terraform destroy to delete the log bucket even when it contains logs. Set to false outside a demo."
+  type        = bool
+  default     = true
+}
