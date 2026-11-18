@@ -44,19 +44,14 @@ The private subnets have no route out of the VPC. The security groups are a patt
 ### Audit and alerting
 
 ```mermaid
-flowchart LR
-    trail["CloudTrail trail<br/>all regions"] -->|"log files"| bucket[("S3 log bucket<br/>encrypted, versioned,<br/>private")]
+flowchart TB
+    trail["CloudTrail trail<br/>all regions"] -->|"log files"| bucket[("S3 log bucket<br/>encrypted, versioned, private")]
     trail -->|"assumes"| role["IAM role<br/>least privilege"]
-    role -->|"writes events"| logs["CloudWatch<br/>Logs group"]
-
-    subgraph detect["Detection"]
-        direction TB
-        filter["Metric filter<br/>root user events"] --> alarm["CloudWatch alarm"]
-        alarm --> topic["SNS topic"]
-        topic --> email["Email"]
-    end
-
-    logs --> filter
+    role -->|"writes events"| logs["CloudWatch Logs group"]
+    logs --> filter["Metric filter<br/>root user events"]
+    filter --> alarm["CloudWatch alarm"]
+    alarm --> topic["SNS topic"]
+    topic --> email["Email"]
 ```
 
 ## What gets built
