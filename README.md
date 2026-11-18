@@ -16,12 +16,13 @@ I deployed it, tested it and destroyed it in my own AWS account on November 17, 
 
 ## Architecture
 
+### Network
+
 ```mermaid
 flowchart TB
-    internet((Internet))
+    internet((Internet)) <--> igw["Internet gateway"]
 
     subgraph vpc["VPC 10.0.0.0/16"]
-        igw["Internet gateway"]
         subgraph az1["Availability Zone 1"]
             pub1["Public subnet<br/>10.0.0.0/24"]
             priv1["Private subnet<br/>10.0.10.0/24"]
@@ -32,30 +33,26 @@ flowchart TB
         end
     end
 
-    internet <--> igw
     igw <-->|"route 0.0.0.0/0"| pub1
     igw <-->|"route 0.0.0.0/0"| pub2
-    pub1 -.->|"web SG to app SG, port 8080"| priv1
-    pub2 -.->|"web SG to app SG, port 8080"| priv2
-
-    subgraph audit["Audit and alerting"]
-        trail["CloudTrail trail<br/>all regions"]
-        bucket[("S3 log bucket<br/>encrypted, versioned, private")]
-        role["IAM role<br/>least privilege"]
-        logs["CloudWatch Logs group"]
-        filter["Metric filter<br/>root user events"]
-        alarm["CloudWatch alarm"]
-        topic["SNS topic"]
-        email["Email"]
-    end
-
-    trail -->|"log files"| bucket
-    trail -->|"assumes"| role
-    role -->|"writes events"| logs
-    logs --> filter --> alarm --> topic --> email
+    pub1 -.->|"web SG to app SG<br/>port 8080"| priv1
+    pub2 -.->|"web SG to app SG<br/>port 8080"| priv2
 ```
 
 The private subnets have no route out of the VPC. The security groups are a pattern for a future workload; nothing is attached to them yet.
+
+### Audit and alerting
+
+```mermaid
+flowchart LR
+    trail["CloudTrail trail<br/>all regions"] -->|"log files"| bucket[("S3 log bucket<br/>encrypted, versioned,<br/>private")]
+    trail -->|"assumes"| role["IAM role<br/>least privilege"]
+    role -->|"writes events"| logs["CloudWatch<br/>Logs group"]
+    logs --> filter["Metric filter<br/>root user events"]
+    filter --> alarm["CloudWatch<br/>alarm"]
+    alarm --> topic["SNS topic"]
+    topic --> email["Email"]
+```
 
 ## What gets built
 
