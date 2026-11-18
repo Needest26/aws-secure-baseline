@@ -13,3 +13,23 @@ variable "project_name" {
   type        = string
   default     = "secure-baseline"
 }
+
+# --- Network ---
+
+variable "vpc_cidr" {
+  description = "Address range for the whole VPC."
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "public_subnet_cidrs" {
+  description = "Address ranges for the public subnets, one per Availability Zone."
+  type        = list(string)
+  default     = ["10.0.0.0/24", "10.0.1.0/24"]
+}
+
+variable "private_subnet_cidrs" {
+  description = "Address ranges for the private subnets, one per Availability Zone."
+  type        = list(string)
+  default     = ["10.0.10.0/24", "10.0.11.0/24"]
+}
