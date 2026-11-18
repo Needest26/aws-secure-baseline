@@ -1,0 +1,48 @@
+# ---------------------------------------------------------------
+# Files that must never reach GitHub.
+# Git reads this list and refuses to track anything that matches.
+# ---------------------------------------------------------------
+
+# Terraform's working folder: downloaded provider plugins (hundreds of MB).
+# Anyone can recreate it with `terraform init`.
+.terraform/
+
+# Terraform state: Terraform's record of what it built. It holds resource
+# IDs, the AWS account number and sometimes secrets in plain text.
+*.tfstate
+*.tfstate.*
+
+# Saved plan files: binary, and can contain the same sensitive values.
+*.tfplan
+tfplan
+
+# Variable value files: where people put environment-specific or secret
+# values. The example file (terraform.tfvars.example) is still tracked.
+*.tfvars
+*.tfvars.json
+
+# Local override files and CLI config
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Credentials of any kind
+.aws/
+credentials
+credentials.*
+*accessKeys*.csv
+*_credentials.csv
+*.pem
+*.key
+.env
+.env.*
+
+# macOS clutter
+.DS_Store
