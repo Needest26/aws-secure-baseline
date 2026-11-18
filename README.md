@@ -48,10 +48,15 @@ flowchart LR
     trail["CloudTrail trail<br/>all regions"] -->|"log files"| bucket[("S3 log bucket<br/>encrypted, versioned,<br/>private")]
     trail -->|"assumes"| role["IAM role<br/>least privilege"]
     role -->|"writes events"| logs["CloudWatch<br/>Logs group"]
-    logs --> filter["Metric filter<br/>root user events"]
-    filter --> alarm["CloudWatch<br/>alarm"]
-    alarm --> topic["SNS topic"]
-    topic --> email["Email"]
+
+    subgraph detect["Detection"]
+        direction TB
+        filter["Metric filter<br/>root user events"] --> alarm["CloudWatch alarm"]
+        alarm --> topic["SNS topic"]
+        topic --> email["Email"]
+    end
+
+    logs --> filter
 ```
 
 ## What gets built
